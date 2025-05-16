@@ -19,5 +19,6 @@ public class Main extends JFrame {
         window.setVisible(true);
         
         // Start game here
+        // testing
     }
 }
