@@ -18,6 +18,6 @@ public class Main extends JFrame {
         window.setResizable(false);
         window.setVisible(true);
         
-        // Start game here
+        // Start game here m
     }
 }
