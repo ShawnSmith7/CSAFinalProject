@@ -5,10 +5,10 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class Sprite extends JLabel {
+public class GameSprite extends JLabel {
     private ImageIcon icon;
     
-    public Sprite(String fileName) {
+    public GameSprite(String fileName) {
         SetImage(fileName);
     }
     
