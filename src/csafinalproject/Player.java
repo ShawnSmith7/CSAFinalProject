@@ -1,9 +1,11 @@
 package csafinalproject;
 
 public class Player {
-    private Deck hand;
+    protected Deck hand;
+    protected String name;
     
-    public Player(Deck _hand) {
+    public Player(String _name, Deck _hand) {
+        name = _name;
         hand = _hand;
     }
     
