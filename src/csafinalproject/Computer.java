@@ -11,15 +11,15 @@ public class Computer extends Player {
     // Main decision function
     public Card playCard(Card topCard) {
         // Step 1: Play number card
-        for (Card card : hand.getHand()) {
-            if (card.getNum() != null && card.canPlayOn(topCard)) {
+        for (Card card : getHand().getDeck()) {
+            if (card.getNum() != null && card.compare(topCard)) {
                 hand.remove(card);
                 return card;
             }
         }
 
         // Step 2: Play action card (excluding wild)
-        for (Card card : hand) {
+        for (Card card : getHand().getDeck()) {
             if (card.getAction() != null &&
                 card.getAction() != Card.Action.wild &&
                 card.getAction() != Card.Action.wilddraw4 &&
@@ -45,7 +45,7 @@ public class Computer extends Player {
     // Pick the color with the most cards in hand
     private Card chooseColor(Card wildCard) {
         Map<Card.Suit, Integer> suitCount = new HashMap<>();
-        for (Card c : hand) {
+        for (Card c : hand.getHand()) {
             if (c.getColor() != null) {
                 suitCount.put(c.getColor(), suitCount.getOrDefault(c.getColor(), 0) + 1);
             }
