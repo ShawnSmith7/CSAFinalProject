@@ -1,5 +1,5 @@
 package csafinalproject;
 
-public class Computer extends Player {
+public class Computer {
     
 }

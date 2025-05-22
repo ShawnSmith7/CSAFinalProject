@@ -1,25 +1,65 @@
 package csafinalproject;
 
-public class Card {
-    public enum Suit { BLUE, GREEN, PURPLE, YELLOW };
+import csafinalproject.core.GameSprite;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import javax.swing.*;
+import java.awt.event.MouseListener;
+import static javax.swing.SwingConstants.CENTER;
+
+public class Card extends GameSprite implements MouseListener {
+    public enum Color { RED, GREEN, BLUE, YELLOW };
     
     private int number;
-    private Suit suit;
+    private Color color;
     
-    public Card(int number, Suit suit) {
-        this.number = number;
-        this.suit = suit;
-    }
-    
-    public int getNumber() {
-        return number;
-    }
-    
-    public Suit getSuit() {
-        return suit;
+    public Card(int number, Color color) {
+        super("card-" + color.name() + ".png");
+        
+        this.number = number % 10;
+        this.color = color;
     }
     
     public boolean compare(Card card) {
-        return number == card.getNumber() || suit == card.getSuit();
+        return number == card.getNumber() || color == card.getColor();
+    }
+    
+    public int getNumber() { return number; }
+    public Color getColor() { return color; }
+
+    public void repaint() {
+        super.repaint();
+        
+        removeAll();
+        
+        JLabel symbolLabel = new JLabel(Integer.toString(this.number));
+        symbolLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 48));
+        symbolLabel.setForeground(java.awt.Color.BLACK);
+        symbolLabel.setHorizontalAlignment(CENTER);
+        add(symbolLabel, BorderLayout.CENTER);
+    }
+    
+    public String toString() {
+        return Integer.toString(number) + color.toString();
+    }
+    
+    public void mouseClicked(MouseEvent e) {
+        
+    }
+
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    public void mouseReleased(MouseEvent e) {
+       
+    }
+    
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    public void mouseExited(MouseEvent e) {
+        
     }
 }

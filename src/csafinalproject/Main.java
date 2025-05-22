@@ -1,12 +1,25 @@
 package csafinalproject;
 
-import csafinalproject.core.GameWindow;
-import javax.swing.SwingUtilities;
+import csafinalproject.core.FileUtil;
+import java.awt.*;
+import javax.swing.*;
 
-public class Main extends GameWindow {
+public class Main {
+    public static final int WINDOW_WIDTH = 800;
+    public static final int WINDOW_HEIGHT = 512;
+    
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> { 
-            new GameWindow(); 
+        SwingUtilities.invokeLater(() -> {
+            JFrame window = new JFrame("Card Game");
+            window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+            window.setIconImage(FileUtil.loadImage("icon.png"));
+            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            window.getContentPane().setBackground(Color.BLACK);
+            window.setLocationRelativeTo(null);
+            window.setResizable(false);
+            window.setVisible(true);
+
+            window.add(new Game());
         });
     }
 }

@@ -9,13 +9,14 @@ public class GameSprite extends JLabel {
     private ImageIcon icon;
     
     public GameSprite(String fileName) {
+        setLayout(new BorderLayout());
+        setHorizontalAlignment(CENTER);
+        
         SetImage(fileName);
     }
     
     // image setter
     public void SetImage(String fileName) {
-        setLayout(new BorderLayout());
-        
         icon = new ImageIcon(FileUtil.loadImage(fileName));
         setIcon(icon);
     }
