@@ -11,6 +11,8 @@ import java.util.ArrayList;
 public class Deck {
         
         public ArrayList<Card> deck = new ArrayList<>();
+        public ArrayList<Card> temp = new ArrayList<>();
+        private int rand;
         
         public ArrayList getDeck() {
             
@@ -134,5 +136,17 @@ public class Deck {
         }
         
     }
+        
+        public void shuffle() {
+            
+            for(int i = 0; i < 108; i++) {
+                
+                rand = (int) (Math.random() * deck.size());
+                temp.add(deck.get(rand));
+                deck.remove(rand);
+            }
+            
+            deck = temp;
+        }
     
 }
