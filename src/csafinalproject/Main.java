@@ -2,6 +2,7 @@ package csafinalproject;
 
 import csafinalproject.core.FileUtil;
 import java.awt.*;
+import java.util.Scanner;
 import javax.swing.*;
 
 public class Main {
@@ -18,8 +19,9 @@ public class Main {
             window.setLocationRelativeTo(null);
             window.setResizable(false);
             window.setVisible(true);
-
-            window.add(new Game());
+            
+            Game game = new Game();
+            window.add(game);
         });
     }
 }
