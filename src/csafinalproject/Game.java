@@ -1,101 +1,87 @@
 package csafinalproject;
 
-import java.util.Random;
-import javax.swing.*;
-import java.awt.*;
-
-import csafinalproject.Card.Color;
 import csafinalproject.core.GameSprite;
-import csafinalproject.core.TransparentPanel;
+import java.awt.*;
+import javax.swing.*;
 
 public class Game extends JPanel {
-    private Deck drawPile;
-    private Deck discardPile;
+    private User user;
+    private Computer bot;
     
-    private Player[] players;
-    private int turnID;
+    private Deck pond;
     
-    public Game()
-    {
+    private JLabel userInfo, botInfo;
+    
+    private boolean currentTurn;
+    
+    public Game() {
         setLayout(new BorderLayout());
-        setBackground(java.awt.Color.BLACK);
         
-        initGame();
-        dealCards();
+        user = new User(this);
+        bot = new Computer(this);
+        pond = new Deck();
         
-        updateUI();
-        
-        players[0].decideMove();
-    }
-    
-    private void initGame() {
-        // init discard pile
-        discardPile = new Deck();
-        discardPile.setLayout(new FlowLayout(FlowLayout.CENTER, -48, 0));
-        
-        // init draw pile
-        drawPile = new Deck();
-        for (int c = 0; c < 4; c++) {
-            for (int n = 0; n < 20; n++) 
-                drawPile.addCard(new Card(n, Color.values()[c]));
+        // add cards to pond
+        for (int r = 0; r < 13; r++) {
+            for (int s = 0; s < 4; s++)
+                pond.addCard(new Card(r));
         }
         
-        // init players
-        players = new Player[2];
-        for (int i = 0; i < players.length; i++)
-            players[i] = new Player(this);
-        
-        // background banner
-        GameSprite banner = new GameSprite("background.png");
-        banner.setLayout(new BorderLayout());
-        
-        // draw pile panel
-        TransparentPanel drawPanel = new TransparentPanel();
-        drawPanel.setPreferredSize(new Dimension(225,0));
-        drawPanel.setLayout(new BorderLayout());
-        drawPanel.add(new GameSprite("card-hidden.png"), BorderLayout.CENTER);
-        
-        // player container
-        Container playerContainer = new Container();
-        playerContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        
-        for (Player p : players) playerContainer.add(p);
-        
-        // player panel
-        TransparentPanel playerPanel = new TransparentPanel();
-        playerPanel.add(Box.createVerticalGlue());
-        playerPanel.add(playerContainer);
-        
-        // discard pile panel
-        TransparentPanel discardPanel = new TransparentPanel();
-        discardPanel.setPreferredSize(new Dimension(225,0));
-        discardPanel.add(Box.createVerticalGlue());
-        discardPanel.add(discardPile);
-        
-        // add components :)
-        add(players[0].getDeck(), BorderLayout.SOUTH);
-        add(banner, BorderLayout.CENTER);
-        
-        banner.add(drawPanel, BorderLayout.EAST);
-        banner.add(playerPanel, BorderLayout.CENTER);
-        banner.add(discardPanel, BorderLayout.WEST);
-    }
-    
-    private void dealCards() {
-        for (Player p : players) {
-            for (int i = 0; i < 7; i++) {
-                int index = new Random().nextInt(0, drawPile.getCardCount() - 1);
-                drawPile.moveCard(index, p.getDeck());
-            }
+        // deal 5 cards to the user and bot
+        for (int i = 0; i < 5; i++) {
+            user.goFish();
+            bot.goFish();
         }
-        drawPile.moveCard(0, discardPile);
+        
+        JPanel middlePanel = new JPanel();
+        middlePanel.setLayout(new BorderLayout());
+        middlePanel.setBackground(Color.DARK_GRAY);
+        middlePanel.add(new GameSprite("DrawPile.png"));
+        add(middlePanel, BorderLayout.CENTER);
+        
+        userInfo = new JLabel();
+        userInfo.setFont(new Font("Comic Sans MS", Font.ITALIC, 32));
+        middlePanel.add(userInfo, BorderLayout.WEST);
+        
+        botInfo = new JLabel();
+        botInfo.setFont(new Font("Comic Sans MS", Font.ITALIC, 32));
+        middlePanel.add(botInfo, BorderLayout.EAST);
+        
+        add(user, BorderLayout.SOUTH);
+        add(bot, BorderLayout.NORTH);
+        
+        // start game
+        SwingUtilities.invokeLater(() -> nextTurn());
     }
     
-    public Player getNextPlayer() { return players[(turnID + 1) % players.length]; }
-    public Player getPreviousPlayer() { return players[(turnID - 1) % players.length]; }
-    public Player getUserPlayer() { return players[0]; }
+    public void nextTurn() {
+        if (user.getDeck().deckSize() == 0 && bot.getDeck().deckSize() == 0) {
+            updateUI();
+            System.out.println("GAME END :)");
+        }
+        else {
+            currentTurn = !currentTurn;
+            (currentTurn ? user : bot).attemptTurn();
+        }
+    }
     
-    public Deck getDrawPile() { return drawPile; }
-    public Deck getDiscardPile() { return discardPile; }
-    public Card getCurrentCard() { return null; }
+    public void updateUI() {
+        super.updateUI();
+        
+        if (isShowing()) {
+            userInfo.setForeground(currentTurn ? Color.YELLOW : Color.GRAY);
+            botInfo.setForeground(currentTurn ? Color.GRAY : Color.YELLOW);
+            
+            userInfo.setText("<html>Player" + user.toString());
+            botInfo.setText("<html>Bot" + bot.toString());
+        }
+    }
+    
+    public Player getOpponent() {
+        return !currentTurn ? user : bot;
+    }
+    
+    public Deck getPond() {
+        return pond;
+    }
 }

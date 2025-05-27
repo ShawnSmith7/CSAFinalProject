@@ -2,6 +2,7 @@ package csafinalproject.core;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -17,7 +18,7 @@ public class GameSprite extends JLabel {
     
     // image setter
     public void SetImage(String fileName) {
-        icon = new ImageIcon(FileUtil.loadImage(fileName));
+        icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage("assets/" + fileName));
         setIcon(icon);
     }
     

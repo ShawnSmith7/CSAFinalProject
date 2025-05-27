@@ -1,8 +1,6 @@
 package csafinalproject;
 
-import csafinalproject.core.FileUtil;
 import java.awt.*;
-import java.util.Scanner;
 import javax.swing.*;
 
 public class Main {
@@ -13,11 +11,11 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             JFrame window = new JFrame("Card Game");
             window.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-            window.setIconImage(FileUtil.loadImage("icon.png"));
+            window.setIconImage(Toolkit.getDefaultToolkit().createImage("assets/icon.png"));
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             window.getContentPane().setBackground(Color.BLACK);
             window.setLocationRelativeTo(null);
-            window.setResizable(false);
+            //window.setResizable(false);
             window.setVisible(true);
             
             Game game = new Game();

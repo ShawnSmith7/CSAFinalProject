@@ -3,34 +3,46 @@ package csafinalproject;
 import csafinalproject.core.GameSprite;
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
 
-public class Card extends GameSprite {
-    public enum Color { RED, GREEN, BLUE, YELLOW };
+public class Card extends GameSprite implements MouseListener {
+    private int rank;
     
-    private int number;
-    private Color color;
-    
-    public Card(int number, Color color) {
-        super("card-" + color.name() + ".png");
+    public Card(int rank) {
+        super("Card.png");
         
-        this.number = number % 10;
-        this.color = color;
+        JLabel[] nums = new JLabel[2];
         
-        JLabel symbolLabel = new JLabel(Integer.toString(this.number));
-        symbolLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 48));
-        symbolLabel.setForeground(java.awt.Color.BLACK);
-        symbolLabel.setHorizontalAlignment(CENTER);
-        add(symbolLabel, BorderLayout.CENTER);
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = new JLabel(Integer.toString(rank));
+            nums[i].setFont(new Font("Comic Sans MS", Font.BOLD, 28));
+            nums[i].setForeground(rank % 2 == 0 ? Color.BLACK : Color.RED);
+            
+            nums[i].setVerticalAlignment(i == 0 ? TOP : BOTTOM);
+            add(nums[i], i == 0 ? BorderLayout.EAST : BorderLayout.WEST);
+        }
+        
+        addMouseListener(this);
+        
+        this.rank = rank;
     }
     
-    public int getNumber() { return number; }
-    public Color getColor() { return color; }
-    
-    public boolean compare(Card card) {
-        return number == card.getNumber() || color == card.getColor();
+    public int getRank() {
+        return rank;
     }
     
     public String toString() {
-        return Integer.toString(number) + color.toString();
+        return Integer.toString(rank);
     }
+    
+    public void mouseClicked(MouseEvent e) {
+        Container parent = getParent().getParent();
+        if (parent instanceof User)
+            ((User)parent).cardClicked(this);
+    }
+
+    public void mousePressed(MouseEvent e) { }
+    public void mouseReleased(MouseEvent e) { }
+    public void mouseEntered(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) { }
 }
