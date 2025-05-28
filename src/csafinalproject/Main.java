@@ -15,7 +15,7 @@ public class Main {
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             window.getContentPane().setBackground(Color.BLACK);
             window.setLocationRelativeTo(null);
-            //window.setResizable(false);
+            window.setResizable(false);
             window.setVisible(true);
             
             Game game = new Game();

@@ -19,7 +19,7 @@ public abstract class Player extends JPanel {
         
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(0, 170));
-        setBackground(Color.GRAY);
+        setBackground(Color.BLUE);
         
         info = new JLabel();
         info.setFont(new Font("Comic Sans MS", Font.ITALIC, 32));
@@ -73,6 +73,8 @@ public abstract class Player extends JPanel {
     public final Deck getDeck() { 
         return deck; 
     }
+    
+    public final int getBooks() { return books; }
     
     public final String toString() {
         return "<br>Cards: " + deck.deckSize() + "<br>Books: " + books;

@@ -9,8 +9,10 @@ public class Game extends JPanel {
     private Computer bot;
     
     private Deck pond;
-    
     private JLabel userInfo, botInfo;
+    
+    private GameSprite pondSprite;
+    private JPanel middlePanel;
     
     private boolean currentTurn;
     
@@ -33,11 +35,13 @@ public class Game extends JPanel {
             bot.goFish();
         }
         
-        JPanel middlePanel = new JPanel();
+        middlePanel = new JPanel();
         middlePanel.setLayout(new BorderLayout());
-        middlePanel.setBackground(Color.DARK_GRAY);
-        middlePanel.add(new GameSprite("DrawPile.png"));
+        middlePanel.setBackground(Color.BLACK);
         add(middlePanel, BorderLayout.CENTER);
+        
+        pondSprite = new GameSprite("DrawPile.png");
+        middlePanel.add(pondSprite);
         
         userInfo = new JLabel();
         userInfo.setFont(new Font("Comic Sans MS", Font.ITALIC, 32));
@@ -57,7 +61,20 @@ public class Game extends JPanel {
     public void nextTurn() {
         if (user.getDeck().deckSize() == 0 && bot.getDeck().deckSize() == 0) {
             updateUI();
-            System.out.println("GAME END :)");
+            
+            String winner = "TIE";
+            
+            if (user.getBooks() != bot.getBooks()) {
+                winner = (user.getBooks() > bot.getBooks()) ? "YOU WIN" : "BOT WIN";
+            }
+            
+            middlePanel.remove(pondSprite);
+            
+            JLabel winLabel = new JLabel(winner);
+            winLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 64));
+            winLabel.setForeground(Color.YELLOW);
+            winLabel.setHorizontalAlignment(0);
+            middlePanel.add(winLabel, BorderLayout.CENTER);
         }
         else {
             currentTurn = !currentTurn;

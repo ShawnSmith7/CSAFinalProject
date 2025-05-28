@@ -18,10 +18,17 @@ public class Computer extends Player {
     public void playTurn() {
         super.playTurn();
         
-        Timer thinkTimer = new Timer(1000, (ActionListener) -> {
-            ArrayList<Integer> options = deck.getRankList();
-            int rank = options.get(new Random().nextInt(0, options.size()));
-            
+        ArrayList<Integer> options = deck.getRankList();
+        int rank = options.get(new Random().nextInt(0, options.size()));
+        
+        JLabel rankLabel = new JLabel();
+        rankLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 24));
+        rankLabel.setText(Integer.toString(rank) + "?");
+        rankLabel.setForeground(Color.YELLOW);
+        rankLabel.setHorizontalAlignment(0);
+        add(rankLabel, BorderLayout.NORTH);
+        
+        Timer thinkTimer = new Timer(3000, (ActionListener) -> {
             Player opponent = game.getOpponent();
             if (opponent.hasRank(rank)) {
                 opponent.getDeck().moveRanks(rank, deck);       // take the opponents cards
@@ -38,6 +45,7 @@ public class Computer extends Player {
                 else
                     game.nextTurn();                            // next player turn
             }
+            remove(rankLabel);
         });
         thinkTimer.setRepeats(false);
         thinkTimer.start();
