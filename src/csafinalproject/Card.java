@@ -1,6 +1,5 @@
 package csafinalproject;
 
-import csafinalproject.core.GameSprite;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;

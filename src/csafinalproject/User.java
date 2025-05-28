@@ -16,8 +16,8 @@ public class User extends Player {
     }
     
     // allow the player to click their cards when their turn is called
-    public void playTurn() {
-        super.playTurn();
+    public void startTurn() {
+        super.startTurn();
         
         canClick = false;
     }
@@ -25,25 +25,7 @@ public class User extends Player {
     public void cardClicked(Card card) {
         if (!canClick) {
             canClick = true;
-            int rank = card.getRank();
-            
-            Player opponent = game.getOpponent();
-            if (opponent.hasRank(rank)) {
-                opponent.getDeck().moveRanks(rank, deck);   // take the opponents cards
-                mergeCardsToBooks();
-                
-                attemptTurn();                                 // play turn again
-            }
-            else {
-                goFish();                                   // go fish
-                int fishRank = deck.getCard(0).getRank();
-                mergeCardsToBooks();
-                
-                if (fishRank == rank)                       // card pulled has rank you picked
-                    attemptTurn();                           // play turn again
-                else
-                    game.nextTurn();                        // next player turn
-            }
+            playRank(card.getRank());
         }
     }
 }

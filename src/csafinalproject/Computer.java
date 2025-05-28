@@ -1,51 +1,45 @@
 package csafinalproject;
 
-import csafinalproject.core.GameSprite;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.JLabel;
+import javax.swing.Timer;
 
 import java.util.ArrayList;
 import java.util.Random;
-import javax.swing.*;
 
 public class Computer extends Player {
+    
+    private JLabel choiceLabel;
     
     public Computer(Game game) {
         super(game);
         
+        choiceLabel = new JLabel();
+        choiceLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 24));
+        choiceLabel.setForeground(Color.YELLOW);
+        choiceLabel.setHorizontalAlignment(0);
+        add(choiceLabel, BorderLayout.NORTH);
+        
         add(new GameSprite("cardbot.gif"), BorderLayout.SOUTH);
     }
     
-    public void playTurn() {
-        super.playTurn();
+    public void startTurn() {
+        super.startTurn();
         
+        // Pick a random option from the deck to ask the user for
         ArrayList<Integer> options = deck.getRankList();
         int rank = options.get(new Random().nextInt(0, options.size()));
         
-        JLabel rankLabel = new JLabel();
-        rankLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 24));
-        rankLabel.setText(Integer.toString(rank) + "?");
-        rankLabel.setForeground(Color.YELLOW);
-        rankLabel.setHorizontalAlignment(0);
-        add(rankLabel, BorderLayout.NORTH);
+        // Show the choice the computer made
+        choiceLabel.setText(Integer.toString(rank) + "?");
         
+        // Play a short timer { it looks like the computer is thinking :) }
         Timer thinkTimer = new Timer(3000, (ActionListener) -> {
-            Player opponent = game.getOpponent();
-            if (opponent.hasRank(rank)) {
-                opponent.getDeck().moveRanks(rank, deck);       // take the opponents cards
-                mergeCardsToBooks();
-                
-                attemptTurn();                                  // play turn again
-            }
-            else {
-                goFish();                                       // go fish
-                int fishRank = deck.getCard(0).getRank();
-                mergeCardsToBooks();
-                if (fishRank == rank)                           // card pulled has rank you picked
-                    attemptTurn();                              // play turn again
-                else
-                    game.nextTurn();                            // next player turn
-            }
-            remove(rankLabel);
+            choiceLabel.setText("");
+            playRank(rank);
         });
         thinkTimer.setRepeats(false);
         thinkTimer.start();

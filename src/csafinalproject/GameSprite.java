@@ -1,4 +1,4 @@
-package csafinalproject.core;
+package csafinalproject;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
