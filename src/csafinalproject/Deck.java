@@ -1,40 +1,39 @@
 package csafinalproject;
 
-import java.awt.*;
+import java.awt.Container;
+import java.awt.FlowLayout;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Deck extends Container {
     private ArrayList<Card> cards;
     
+    // setup card list and layout
     public Deck() {
-        setLayout(new FlowLayout(FlowLayout.CENTER, -25, 0));
         cards = new ArrayList<Card>();
+        setLayout(new FlowLayout(FlowLayout.CENTER, -25, 0));
     }
     
-    public void displayCards() {
-        removeAll();
-        
-        for(Card c : cards)
-            add(c);
-    }
+    // deck size getter
+    public int deckSize() { return cards.size(); }
     
-    public int cardCount() { return cards.size(); }
-    public int getRandomIndex() { return new Random().nextInt(0, cards.size()); }
-    
+    // card getter
     public Card getCard(int index) { return cards.get(index); }
+    
+    // adds a card to this deck
     public void addCard(Card card) { 
         cards.add(0, card);
         displayCards();
     }
     
+    // moves a card to a different deck and removes it from this deck
     public void moveCard(int index, Deck deck) {
         deck.addCard(getCard(index));
         cards.remove(index);
         displayCards();
     }
     
+    // moves all cards from the deck with this rank to another deck
     public void moveRanks(int rank, Deck deck) {
         for (int i = cards.size() - 1; i >= 0; i--)
             if (cards.get(i).getRank() == rank)
@@ -42,6 +41,7 @@ public class Deck extends Container {
         displayCards();
     }
     
+    // removes any cards with this rank
     public void removeRanks(int rank) {
         for (int i = cards.size() - 1; i >= 0; i--)
             if (cards.get(i).getRank() == rank)
@@ -49,6 +49,7 @@ public class Deck extends Container {
         displayCards();
     }
     
+    // counts the total number of cards with this rank 
     public int getRankGroupCount(int rank) {
         int count = 0;
         for (Card c : cards)
@@ -57,6 +58,7 @@ public class Deck extends Container {
         return count;
     }
     
+    // returns whether this deck contains a card with this rank
     public boolean hasRank(int rank) {
         for (Card c : cards)
             if (c.getRank() == rank)
@@ -64,7 +66,8 @@ public class Deck extends Container {
         return false;
     }
     
-    public ArrayList<Integer> getRankList() {
+    // returns a list of ranks that can be choosen from this deck 
+    public ArrayList<Integer> getOptionsList() {
         ArrayList<Integer> options = new ArrayList<Integer>();
         
         for (Card c : cards)
@@ -74,10 +77,9 @@ public class Deck extends Container {
         return options;
     }
     
-    public String toString() {
-        String deckString = "";
-        for (Card c : cards)
-            deckString += c + " ";
-        return deckString;
+    public void displayCards() {
+        removeAll();
+        
+        for(Card c : cards) add(c);
     }
 }

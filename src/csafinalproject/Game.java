@@ -1,14 +1,20 @@
 package csafinalproject;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import java.util.Random;
 
 public class Game extends JPanel {
     private User user;
     private Computer bot;
     
     private Deck pond;
-    
     private GameSprite pondSprite;
     
     private JPanel infoPanel;
@@ -50,8 +56,8 @@ public class Game extends JPanel {
         
         // deal 5 cards to the user and bot
         for (int i = 0; i < 5; i++) {
-            user.goFish();
-            bot.goFish();
+            pond.moveCard(new Random().nextInt(0, pond.deckSize()), user.deck);
+            pond.moveCard(new Random().nextInt(0, pond.deckSize()), bot.deck);
         }
         
         // start game
@@ -59,15 +65,14 @@ public class Game extends JPanel {
     }
     
     public void nextTurn() {
-        if (user.getDeck().cardCount() == 0 && bot.getDeck().cardCount() == 0) {
+        // end the game when both user and bot deck's are empty
+        if (user.getDeck().deckSize() == 0 && bot.getDeck().deckSize() == 0) {
             updateUI();
             
+            // decide who has the most books
             String winner = "TIE";
-            
-            if (user.getBooks() != bot.getBooks()) {
+            if (user.getBooks() != bot.getBooks())
                 winner = (user.getBooks() > bot.getBooks()) ? "YOU WIN" : "BOT WIN";
-            }
-            
             infoPanel.remove(pondSprite);
             
             JLabel winLabel = new JLabel(winner);
@@ -77,6 +82,7 @@ public class Game extends JPanel {
             infoPanel.add(winLabel, BorderLayout.CENTER);
         }
         else {
+            // try to start the current player's turn
             currentTurn = !currentTurn;
             (currentTurn ? user : bot).attemptTurn();
         }
@@ -86,6 +92,12 @@ public class Game extends JPanel {
         super.updateUI();
         
         if (isShowing()) {
+            // set backgrounds to a random color 
+            Color backColor = Color.getHSBColor(new Random().nextInt(0, 256) / 256f, .9f, .5f);
+            user.setBackground(backColor);
+            bot.setBackground(backColor);
+            
+            // update user and bot info
             userInfo.setForeground(currentTurn ? Color.YELLOW : Color.GRAY);
             botInfo.setForeground(currentTurn ? Color.GRAY : Color.YELLOW);
             
@@ -94,10 +106,12 @@ public class Game extends JPanel {
         }
     }
     
+    // opponent getter
     public Player getOpponent() {
         return !currentTurn ? user : bot;
     }
     
+    // pond deck getter
     public Deck getPond() {
         return pond;
     }
